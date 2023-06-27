@@ -18,10 +18,19 @@ class EloquentDespesasRepository implements DespesasRepository
                 'data' => $request->data,
             ]);
 
-            $categoria = new Categorias();
-            if ($i = $request->categorias !== null) {
-                $categoria->$i;
+            $categoria = [
+                'despesas_id' => $despesas->id,
+                'categorias' => 'Outras',
+            ];
+            
+            if ($request->categorias !== null) {
+                $categoria = [
+                    'despesas_id' => $despesas->id,
+                    'categorias' => $request->categorias,
+                ];
             }
+
+            Categorias::insert($categoria);
 
             return $despesas;
         });

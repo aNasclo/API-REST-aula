@@ -10,55 +10,55 @@ class Categorias extends Model
 {
     use HasFactory;
 
-    protected $fillable = ["categoria"];
+    protected $fillable = ["categorias"];
 
-    public function __construct()
-    {
-        $this->outras();
-    }
+    // public function __construct()
+    // {
+    //     $this->outras();
+    // }
 
     public function despesas()
     {
-        return $this->hasMany(Despesas::class, 'categoria_id');
+        return $this->hasMany(Despesas::class, 'categorias_id');
     }
 
-    public function alimentacao()
-    {
-        $this->categoria = 'Alimentação';
-    }
+    // public function alimentacao()
+    // {
+    //     $this->categorias = 'Alimentação';
+    // }
 
-    public function saude()
-    {
-        $this->categoria = 'Saúde';
-    }
+    // public function saude()
+    // {
+    //     $this->categorias = 'Saúde';
+    // }
 
-    public function moradia()
-    {
-        $this->categoriai = 'Moradia';
-    }
+    // public function moradia()
+    // {
+    //     $this->categoriai = 'Moradia';
+    // }
 
-    public function transporte()
-    {
-        $this->categoria = 'Transporte';
-    }
+    // public function transporte()
+    // {
+    //     $this->categorias = 'Transporte';
+    // }
 
-    public function educacao()
-    {
-        $this->categoria = 'Educação';
-    }
+    // public function educacao()
+    // {
+    //     $this->categorias = 'Educação';
+    // }
 
-    public function lazer()
-    {
-        $this->categoria = 'Lazer';
-    }
+    // public function lazer()
+    // {
+    //     $this->categorias = 'Lazer';
+    // }
 
-    public function imprevistos()
-    {
-        $this->categoria = 'Imprevistos';
-    }
+    // public function imprevistos()
+    // {
+    //     $this->categorias = 'Imprevistos';
+    // }
 
-    public function outras()
-    {
-        $this->categoria = 'Outras';
-    }
+    // public function outras()
+    // {
+    //     $this->categorias = 'Outras';
+    // }
 }
