@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Models\Despesas;
+use App\Models\Categorias;
 use Illuminate\Support\Facades\DB;
 use App\Http\Requests\DespesasFormRequest;
 
@@ -16,6 +17,11 @@ class EloquentDespesasRepository implements DespesasRepository
                 'valor' => $request->valor,
                 'data' => $request->data,
             ]);
+
+            $categoria = new Categorias();
+            if ($i = $request->categorias !== null) {
+                $categoria->$i;
+            }
 
             return $despesas;
         });
