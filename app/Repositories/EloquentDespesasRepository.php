@@ -22,7 +22,7 @@ class EloquentDespesasRepository implements DespesasRepository
                 'despesas_id' => $despesas->id,
                 'categorias' => 'Outras',
             ];
-            
+
             if ($request->categorias !== null) {
                 $categoria = [
                     'despesas_id' => $despesas->id,

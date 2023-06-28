@@ -12,53 +12,8 @@ class Categorias extends Model
 
     protected $fillable = ["categorias"];
 
-    // public function __construct()
-    // {
-    //     $this->outras();
-    // }
-
     public function despesas()
     {
-        return $this->hasMany(Despesas::class, 'categorias_id');
+        return $this->belongsTo(Despesas::class);
     }
-
-    // public function alimentacao()
-    // {
-    //     $this->categorias = 'Alimentação';
-    // }
-
-    // public function saude()
-    // {
-    //     $this->categorias = 'Saúde';
-    // }
-
-    // public function moradia()
-    // {
-    //     $this->categoriai = 'Moradia';
-    // }
-
-    // public function transporte()
-    // {
-    //     $this->categorias = 'Transporte';
-    // }
-
-    // public function educacao()
-    // {
-    //     $this->categorias = 'Educação';
-    // }
-
-    // public function lazer()
-    // {
-    //     $this->categorias = 'Lazer';
-    // }
-
-    // public function imprevistos()
-    // {
-    //     $this->categorias = 'Imprevistos';
-    // }
-
-    // public function outras()
-    // {
-    //     $this->categorias = 'Outras';
-    // }
 }

@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Repositories\DespesasRepository;
 use App\Http\Requests\DespesasFormRequest;
+use App\Models\Categorias;
 
 class Despesascontroller extends Controller
 {
@@ -18,16 +19,12 @@ class Despesascontroller extends Controller
      */
     public function index(Request $request)
     {
-        // $query = Despesas::query();
-        // if ($request->has('descricao')) {
-        //     $query->whereDescricao($request->descricao);
-        // }
+        $query = Despesas::query();
+        if ($request->has('descricao')) {
+            $query->where('descricao', $request->descricao);
+        }
 
-        // return $query->paginate(5);
-
-        $despesas = Despesas::all();
-
-        return response()->json($despesas);
+        return $query->paginate(5);
     }
 
     /**
@@ -43,7 +40,7 @@ class Despesascontroller extends Controller
      */
     public function show(int $despesas)
     {
-        return Despesas::find($despesas);
+        return Despesas::whereId($despesas)->with('categorias')->first();
     }
 
     /**
