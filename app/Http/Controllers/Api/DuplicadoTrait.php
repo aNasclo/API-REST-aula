@@ -12,17 +12,16 @@ trait DuplicadoTrait
     public function duplicado(FormRequest $request, Model $model)
     {
         $requestDescricao = $request->descricao;
-        $requestData = explode('/', $request->data);
+        $requestData = explode('/', $request->data); // Aqui é onde separo Dia/Mes/Ano do que vem no formulario
 
-        $objeto = $model::where('descricao', $requestDescricao)->first();
-    
-        if ($objeto && $objeto->data) {
-        $dataDB = explode('/', $objeto->data);
+        $objetos = $model::where('descricao', $requestDescricao)->get();
 
-        if ($dataDB[1] == $requestData[1]) {
-            return true;
+        foreach ($objetos as $objeto) {
+            $dataDB = explode('/', $objeto->data); // Aqui é onde separo Dia/Mes/Ano do que tem no DB
+            if ($dataDB[1] == $requestData[1] && $dataDB[2] == $requestData[2]) {
+                return true;
+            }
         }
-    }
 
     return false;
     }

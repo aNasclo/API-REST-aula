@@ -44,6 +44,13 @@ class ReceitasController extends Controller
 
     public function update(ReceitasFormRequest $request, int $receitas)
     {
+        $model = new Receitas();
+        $result = $this->duplicado($request, $model);
+
+        if($result) {
+            return response()->json(['error' => 'Já existe uma RECEITA com esse nome este MES.'], 400);
+        }
+        
         $receita = Receitas::find($receitas);
         $receita->fill($request->all());
         $receita->save();

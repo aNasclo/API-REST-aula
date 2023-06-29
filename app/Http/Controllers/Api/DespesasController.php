@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Repositories\DespesasRepository;
 use App\Http\Requests\DespesasFormRequest;
+use App\Http\Controllers\Api\DuplicadoTrait;
 
 class Despesascontroller extends Controller
 {
@@ -43,6 +44,13 @@ class Despesascontroller extends Controller
 
     public function update(DespesasFormRequest $request, int $despesas)
     {
+        $model = new Despesas();
+        $result = $this->duplicado($request, $model);
+
+        if($result) {
+            return response()->json(['error' => 'Já existe uma DESPESA com esse nome este MES.'], 400);
+        }
+        
         $despesa = Despesas::find($despesas);
         $despesa->fill($request->all());
         $despesa->save();
