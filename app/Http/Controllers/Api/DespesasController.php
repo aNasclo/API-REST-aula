@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Models\Despesas;
+use App\Models\Categorias;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Repositories\DespesasRepository;
@@ -14,12 +15,30 @@ class Despesascontroller extends Controller
     use DuplicadoTrait;
 
     public function __construct(private DespesasRepository $despesasRepository) {}
+
+    public function listByMonth($ano, $mes)
+    {
+        $despesas = Despesas::where('data', 'LIKE', "%/{$mes}/{$ano}%")
+            ->with('categorias')
+            ->get(['id', 'descricao', 'valor', 'data']);
+            
+        return response()->json($despesas);
+    }
     
     public function index(Request $request)
     {
         $query = Despesas::query();
+
+        // NESSE AQUI FAZ A BUSCA EXATA DO QUE É COLOCADO NA URL
+
+        // if ($request->has('descricao')) {
+        //     $query->where('descricao', $request->descricao);
+        // }
+
+        // FAZ A BUSCA BUCANDO ITENS SEMELHANTES AO QUE FOI POSTO NA URL
         if ($request->has('descricao')) {
-            $query->where('descricao', $request->descricao);
+            $descricao = $request->descricao;
+            $query->where('descricao', 'LIKE', '%' . $descricao . '%');
         }
 
         return $query->paginate(5);
@@ -50,7 +69,7 @@ class Despesascontroller extends Controller
         if($result) {
             return response()->json(['error' => 'Já existe uma DESPESA com esse nome este MES.'], 400);
         }
-        
+
         $despesa = Despesas::find($despesas);
         $despesa->fill($request->all());
         $despesa->save();

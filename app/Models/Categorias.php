@@ -14,6 +14,6 @@ class Categorias extends Model
 
     public function despesas()
     {
-        return $this->belongsTo(Despesas::class);
+        return $this->belongsTo(Despesas::class, 'despesas_id');
     }
 }

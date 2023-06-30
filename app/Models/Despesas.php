@@ -14,6 +14,6 @@ class Despesas extends Model
 
     public function categorias()
     {
-        return $this->hasMany(Categorias::class, 'despesas_id');
+        return $this->hasOne(Categorias::class, 'despesas_id');
     }
 }

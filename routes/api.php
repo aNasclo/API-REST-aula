@@ -22,3 +22,6 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::apiResource('/despesas', DespesasController::class);
 Route::apiResource('/receitas', ReceitasController::class);
+
+Route::get('/despesas/{ano}/{mes}', [DespesasController::class, 'listByMonth']);
+Route::get('/receitas/{ano}/{mes}', [ReceitasController::class, 'listByMonth']);

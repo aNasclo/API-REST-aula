@@ -15,11 +15,27 @@ class ReceitasController extends Controller
     
     public function __construct(private ReceitasRepository $receitasRepository) {}
     
+    public function listByMonth($ano, $mes)
+    {
+        $receitas = Receitas::where('data', 'LIKE', "%/{$mes}/{$ano}%")
+            ->get(['descricao', 'valor', 'data']);
+            
+        return response()->json($receitas);
+    }
+
     public function index(Request $request)
     {
         $query = Receitas::query();
+        // NESSE AQUI FAZ A BUSCA EXATA DO QUE É COLOCADO NA URL
+
+        // if ($request->has('descricao')) {
+        //     $query->whereDescricao($request->descricao);
+        // }
+
+        // FAZ A BUSCA BUCANDO ITENS SEMELHANTES AO QUE FOI POSTO NA URL
         if ($request->has('descricao')) {
-            $query->whereDescricao($request->descricao);
+            $descricao = $request->descricao;
+            $query->where('descricao', 'LIKE', '%' . $descricao . '%');
         }
 
         return $query->paginate(8);
@@ -50,7 +66,7 @@ class ReceitasController extends Controller
         if($result) {
             return response()->json(['error' => 'Já existe uma RECEITA com esse nome este MES.'], 400);
         }
-        
+
         $receita = Receitas::find($receitas);
         $receita->fill($request->all());
         $receita->save();
