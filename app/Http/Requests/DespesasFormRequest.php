@@ -31,6 +31,7 @@ class DespesasFormRequest extends FormRequest
             'descricao' => ['required', 'min:2'],
             'valor' => ['required', 'numeric', 'min:1'],
             'data' => ['required', 'date_format:d/m/Y'],
+            'categorias' => ['nullable', 'in:Alimentação,Saúde,Moradia,Transporte,Educação,Lazer,Imprevistos,Outras'],
         ];
     }
 
@@ -49,6 +50,7 @@ class DespesasFormRequest extends FormRequest
             'valor.min' => 'O campo valor deve ser no mínimo :min.',
             'data.required' => 'O campo data é obrigatório.',
             'data.date_format' => 'O campo data deve estar no formato DD/MM/YYYY.',
+            'categorias.in' => 'O campo categorias só pode ser preenchido com Alimentação,Saúde,Moradia,Transporte,Educação,Lazer,Imprevistos ou Outras '
         ];
     }
 }
