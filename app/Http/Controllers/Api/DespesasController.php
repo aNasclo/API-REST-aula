@@ -21,16 +21,15 @@ class Despesascontroller extends Controller
         $despesas = Despesas::where('data', 'LIKE', "%/{$mes}/{$ano}%")
             ->with('categorias')
             ->get(['id', 'descricao', 'valor', 'data']);
-            
+
         return response()->json($despesas);
     }
     
     public function index(Request $request)
     {
-        $query = Despesas::query();
+        $query = Despesas::query()->with('categorias');
 
         // NESSE AQUI FAZ A BUSCA EXATA DO QUE É COLOCADO NA URL
-
         // if ($request->has('descricao')) {
         //     $query->where('descricao', $request->descricao);
         // }

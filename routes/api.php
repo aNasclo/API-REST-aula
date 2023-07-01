@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\DespesasController;
 use App\Http\Controllers\Api\ReceitasController;
+use App\Http\Controllers\ResumoController;
 
 /*
 |--------------------------------------------------------------------------
@@ -25,3 +26,5 @@ Route::apiResource('/receitas', ReceitasController::class);
 
 Route::get('/despesas/{ano}/{mes}', [DespesasController::class, 'listByMonth']);
 Route::get('/receitas/{ano}/{mes}', [ReceitasController::class, 'listByMonth']);
+
+Route::get('/resumo/{ano}/{mes}', [ResumoController::class, 'resumoDoMes']);
