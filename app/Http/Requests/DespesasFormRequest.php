@@ -54,13 +54,3 @@ class DespesasFormRequest extends FormRequest
         ];
     }
 }
-
-
-
-// function ($attribute, $value, $fail) {
-//     // Verifica se a data é válida
-//     if (!strtotime($value)) {
-//         $fail('O campo data deve ser uma data válida no formato DD/MM/YYYY.');
-//     }
-// }
-// ],
