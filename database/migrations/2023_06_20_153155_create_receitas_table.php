@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('descricao');
             $table->float('valor', 8, 2);
             $table->date('data');
+            $table->foreignId('user_id')->constrained('users');
             $table->timestamps();
         });
     }

@@ -14,7 +14,8 @@ trait DuplicadoTrait
         $requestDescricao = $request->descricao;
         $requestData = explode('/', $request->data); // Aqui é onde separo Dia/Mes/Ano do que vem no formulario
 
-        $objetos = $model::where('descricao', $requestDescricao)->get();
+        $user = auth()->user();
+        $objetos = $model::where('user_id', $user->id)->where('descricao', $requestDescricao)->get();
 
         foreach ($objetos as $objeto) {
             $dataDB = explode('/', $objeto->data); // Aqui é onde separo Dia/Mes/Ano do que tem no DB

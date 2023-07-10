@@ -2,20 +2,27 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\Api\UserAutenticadoTrait;
 use App\Models\Despesas;
 use App\Models\Receitas;
 use Illuminate\Http\Request;
 
 class ResumoController extends Controller
 {
+    use UserAutenticadoTrait;
+
     public function resumoDoMes(string $ano, string $mes) 
     {
+        $user = $this->autenticado();
+
         $despesas = Despesas::where('data', 'LIKE', "%/{$mes}/{$ano}%")
+            ->where('user_id', $user->id)
             ->get(['valor']);
 
         $totalDespesas = $despesas->sum('valor');
 
         $receitas = Receitas::where('data', 'LIKE', "%/{$mes}/{$ano}%")
+            ->where('user_id', $user->id)
             ->get(['valor']);
 
         $totalReceitas = $receitas->sum('valor');
@@ -35,7 +42,10 @@ class ResumoController extends Controller
 
     public function resumoDoMesCategoria(string $ano, string $mes) 
     {
+        $user = $this->autenticado();
+
         $despesas = Despesas::where('data', 'LIKE', "%/{$mes}/{$ano}%")
+            ->where('user_id', $user->id)
             ->with('categorias')
             ->get(['id','valor']);
 

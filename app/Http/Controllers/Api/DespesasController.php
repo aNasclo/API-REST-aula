@@ -9,16 +9,21 @@ use App\Http\Controllers\Controller;
 use App\Repositories\DespesasRepository;
 use App\Http\Requests\DespesasFormRequest;
 use App\Http\Controllers\Api\DuplicadoTrait;
+use App\Http\Controllers\Api\UserAutenticadoTrait;
 
 class Despesascontroller extends Controller
 {
     use DuplicadoTrait;
+    use UserAutenticadoTrait;
 
     public function __construct(private DespesasRepository $despesasRepository) {}
 
     public function listByMonth($ano, $mes)
     {
+        $user = $this->autenticado();
+
         $despesas = Despesas::where('data', 'LIKE', "%/{$mes}/{$ano}%")
+            ->where('user_id', $user->id)
             ->with('categorias')
             ->get(['id', 'descricao', 'valor', 'data']);
 
@@ -27,24 +32,24 @@ class Despesascontroller extends Controller
     
     public function index(Request $request)
     {
+        $user = $this->autenticado();
+
         $query = Despesas::query()->with('categorias');
 
-        // NESSE AQUI FAZ A BUSCA EXATA DO QUE É COLOCADO NA URL
-        // if ($request->has('descricao')) {
-        //     $query->where('descricao', $request->descricao);
-        // }
-
-        // FAZ A BUSCA BUCANDO ITENS SEMELHANTES AO QUE FOI POSTO NA URL
         if ($request->has('descricao')) {
             $descricao = $request->descricao;
             $query->where('descricao', 'LIKE', '%' . $descricao . '%');
         }
 
-        return $query->paginate(5);
+        $query->where('user_id', $user->id);
+
+        return $query->paginate(8);
     }
 
     public function store(DespesasFormRequest $request)
     {
+        $user = $this->autenticado();
+
         $model = new Despesas();
         $result = $this->duplicado($request, $model);
 
@@ -52,12 +57,14 @@ class Despesascontroller extends Controller
             return response()->json(['error' => 'Já existe uma DESPESA com esse nome este MES.'], 400);
         }
 
-        return response()->json($this->despesasRepository->add($request), 201);
+        return response()->json($this->despesasRepository->add($request, $user), 201);
     }
 
     public function show(int $despesas)
     {
-        return Despesas::whereId($despesas)->with('categorias')->first();
+        $user = $this->autenticado();
+
+        return Despesas::whereId($despesas)->where('user_id', $user->id)->with('categorias')->first();
     }
 
     public function update(DespesasFormRequest $request, int $despesas)
@@ -69,18 +76,31 @@ class Despesascontroller extends Controller
             return response()->json(['error' => 'Já existe uma DESPESA com esse nome este MES.'], 400);
         }
 
-        $despesa = Despesas::find($despesas);
+        $user = $this->autenticado();
+
+        $despesa = Despesas::where('id', $despesas)->where('user_id', $user->id)->first();
+
+        if (!$despesa) {
+            return response()->json(['error' => 'Despesa não encontrada. Confira o ID passado :)'], 404);
+        }
+
         $despesa->fill($request->all());
         $despesa->save();
     }
 
     public function destroy(string $ids)
     {
+        $user = $this->autenticado();
+
         $ids = request()->query('ids');
         $idsArray = explode(',', $ids);
 
         foreach ($idsArray as $id) {
-            Despesas::destroy($id);
+            $despesa = Despesas::where('id', $id)->where('user_id', $user->id)->first();
+
+            if ($despesa) {
+                $despesa->delete();
+            }
         }
         
         return response()->noContent();

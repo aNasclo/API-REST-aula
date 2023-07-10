@@ -2,6 +2,7 @@
 
 namespace App\Repositories;
 
+use App\Models\User;
 use App\Models\Despesas;
 use App\Models\Categorias;
 use Illuminate\Support\Facades\DB;
@@ -11,7 +12,7 @@ use Illuminate\Validation\ValidationException;
 
 class EloquentDespesasRepository implements DespesasRepository
 {
-    public function add(DespesasFormRequest $request): Despesas
+    public function add(DespesasFormRequest $request, User $user): Despesas
     {
 
         $validator = Validator::make($request->all(), $request->rules(), $request->messages());
@@ -22,8 +23,8 @@ class EloquentDespesasRepository implements DespesasRepository
             // return response()->json(['error' => $validator->errors()], 422);
         }
 
-        return DB::transaction(function () use ($request) {
-            $despesas = Despesas::create([
+        return DB::transaction(function () use ($request, $user) {
+            $despesas = $user->despesas()->create([
                 'descricao' => $request->descricao,
                 'valor' => $request->valor,
                 'data' => $request->data,

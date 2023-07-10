@@ -3,8 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Utils\DatabaseUtils;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Validation\ValidationException;
 
 class AuthController extends Controller
