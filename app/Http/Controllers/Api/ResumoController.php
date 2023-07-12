@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Api\UserAutenticadoTrait;
 use App\Models\Despesas;
 use App\Models\Receitas;
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 class ResumoController extends Controller

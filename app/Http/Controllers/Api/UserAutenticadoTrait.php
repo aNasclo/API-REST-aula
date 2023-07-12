@@ -8,6 +8,7 @@ Trait UserAutenticadoTrait
 {
     public function autenticado(): User
     {
+        /** @var \App\Models\User|null $user */
         $user = auth()->user();
 
         if (!$user) {

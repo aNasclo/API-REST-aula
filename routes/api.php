@@ -4,7 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
-use App\Http\Controllers\ResumoController;
+use App\Http\Controllers\Api\ResumoController;
 use App\Http\Controllers\Api\DespesasController;
 use App\Http\Controllers\Api\ReceitasController;
 
@@ -42,6 +42,7 @@ Route::post('/login', function (Request $request) {
     $credentials = $request->only(['email', 'password']);
     if(Auth::attempt($credentials) === false) { return response()->json('Unauthorized', 401); }
 
+    /** @var \App\Models\User|null $user */
     $user = Auth::user();
     $user->tokens()->delete();
     $token = $user->createToken('token');
